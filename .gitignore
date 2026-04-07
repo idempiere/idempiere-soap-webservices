@@ -1,0 +1,41 @@
+# ── Maven ────────────────────────────────────────────────────────────────────
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ── Tycho / Eclipse PDE ──────────────────────────────────────────────────────
+*.class
+bin/
+local/
+p2/
+
+# ── Eclipse workspace & IDE ──────────────────────────────────────────────────
+.metadata/
+.recommenders/
+*.launch
+*.bak
+*.swp
+*.swo
+.settings/
+.loadpath
+.project
+.classpath
+*.iml
+*.iws
+*.ipr
+.idea/
+
+# ── p2-maven-plugin output (org.idempiere.webservice.client) ─────────────────
+# The generated P2 site is a build artifact, not source
+org.idempiere.webservice.client/target/
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

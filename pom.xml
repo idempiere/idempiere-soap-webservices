@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>org.idempiere.soap.main</artifactId>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.idempiere.soap</groupId>
+        <artifactId>org.idempiere.soap.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>org.idempiere.soap.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <idempiere.core.path>../idempiere</idempiere.core.path>
+    </properties>
+
+    <modules>
+        <!-- Tycho modules only — org.idempiere.webservice.client runs separately (see README) -->
+        <module>org.idempiere.webservices.resources</module>
+        <module>org.idempiere.webservices</module>
+        <module>org.idempiere.webservices-feature</module>
+        <module>org.idempiere.webservices.client-feature</module>
+        <module>${idempiere.core.path}/${idempiere.target}</module>
+    </modules>
+</project>
