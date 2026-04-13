@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: iDempiere Webservices
 Bundle-SymbolicName: org.idempiere.webservices;singleton:=true
 Bundle-Version: 14.0.0.qualifier
-Bundle-Activator: org.idempiere.webservices.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=17))"
 Service-Component: OSGI-INF/*.xml
@@ -110,7 +109,8 @@ Require-Bundle: org.adempiere.base;bundle-version="14.0.0",
  wrapped.org.apache.xmlbeans.xmlbeans;bundle-version="5.0.3",
  wrapped.org.apache.cxf.cxf-rt-ws-transfer;bundle-version="3.6.3",
  org.apache.cxf.cxf-rt-databinding-xmlbeans;bundle-version="3.6.3",
- org.apache.cxf.cxf-rt-rs-extension-providers;bundle-version="3.6.3"
+ org.apache.cxf.cxf-rt-rs-extension-providers;bundle-version="3.6.3",
+ org.adempiere.plugin.utils;bundle-version="14.0.0"
 Bundle-ClassPath: .,
  lib/idempiere-xmlbeans.jar
 Export-Package: org.idempiere.webservices.model,
@@ -123,6 +123,7 @@ Export-Package: org.idempiere.webservices.model,
 Web-ContextPath: ADInterface
 Jetty-Environment: ee8
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.idempiere.webservices.Activator
 Automatic-Module-Name: org.idempiere.webservices
 Bundle-Vendor: iDempiere Community
 Eclipse-BundleShape: dir

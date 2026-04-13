@@ -13,31 +13,19 @@
  *****************************************************************************/
 package org.idempiere.webservices;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
+import org.adempiere.plugin.utils.Incremental2PackActivator;
 
-public class Activator implements BundleActivator {
-
-	private static BundleContext context;
-
-	static BundleContext getContext() {
-		return context;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
-	}
+/**
+ * Bundle activator for org.idempiere.webservices.
+ * Extends Incremental2PackActivator to support automatic 2Pack installation.
+ *
+ * NOTE: It is important that Bundle-Activator in MANIFEST.MF points to THIS class
+ * (defined inside this bundle), not to Incremental2PackActivator directly.
+ * Jetty's OSGi WAB classloader helper uses the Bundle-Activator class's classloader
+ * to resolve web app classes. If it points to a class in another bundle, Jetty
+ * will use that other bundle's classloader and fail to load classes from
+ * bundles required by this bundle (e.g. org.idempiere.webservices.resources).
+ */
+public class Activator extends Incremental2PackActivator {
 
 }
