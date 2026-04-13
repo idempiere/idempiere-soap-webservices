@@ -15,7 +15,6 @@
     </parent>
 
     <properties>
-        <idempiere.core.path>../idempiere</idempiere.core.path>
     </properties>
 
     <modules>
@@ -24,6 +23,5 @@
         <module>org.idempiere.webservices</module>
         <module>org.idempiere.webservices-feature</module>
         <module>org.idempiere.webservices.client-feature</module>
-        <module>${idempiere.core.path}/${idempiere.target}</module>
     </modules>
 </project>
