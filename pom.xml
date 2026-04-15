@@ -18,10 +18,7 @@
     </properties>
 
     <modules>
-        <!-- Tycho modules only — org.idempiere.webservice.client runs separately (see README) -->
         <module>org.idempiere.webservices.resources</module>
         <module>org.idempiere.webservices</module>
-        <module>org.idempiere.webservices-feature</module>
-        <module>org.idempiere.webservices.client-feature</module>
     </modules>
 </project>
