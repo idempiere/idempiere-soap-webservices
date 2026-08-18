@@ -39,3 +39,7 @@ org.idempiere.webservice.client/target/
 # ── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+
+# ── org.idempiere.webservice.library ─────────────────────────────────────────
+# The embedded jars are downloaded by the build, they are not sources
+org.idempiere.webservice.library/lib/*.jar

@@ -18,6 +18,7 @@
     </properties>
 
     <modules>
+        <module>org.idempiere.webservice.library</module>
         <module>org.idempiere.webservices.resources</module>
         <module>org.idempiere.webservices</module>
     </modules>
