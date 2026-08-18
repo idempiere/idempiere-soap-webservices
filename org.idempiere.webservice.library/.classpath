@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-bindings-soap.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-bindings-xml.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-databinding-jaxb.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-databinding-xmlbeans.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-frontend-jaxrs.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-frontend-jaxws.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-frontend-simple.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-rs-extension-providers.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-rs-service-description.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-security.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-transports-http.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-ws-addr.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-ws-policy.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-ws-transfer.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-wsdl.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/neethi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-aop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-beans.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-context-support.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-context.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-expression.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-web.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/wsdl4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xmlschema-core.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

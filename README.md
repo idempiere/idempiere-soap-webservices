@@ -93,6 +93,23 @@ mvn clean verify \
 
 ***
 
+## Importing into Eclipse
+
+Build first: the 26 jars in `org.idempiere.webservice.library/lib/` are build output, so a fresh
+clone has an empty `lib/` and the classpath entries of that project point at missing files.
+
+```bash
+mvn clean verify
+```
+
+Then **File > Import > General > Existing Projects into Workspace**, select the repository root and
+import the three plugin projects. `org.idempiere.webservices` resolves
+`Require-Bundle: org.idempiere.webservice.library` from the workspace, the rest of its dependencies
+from the iDempiere core target platform, so core has to be built and set as the active target
+platform first.
+
+***
+
 ## Installing into iDempiere
 
 ### Option A — Extension manager (recommended)
