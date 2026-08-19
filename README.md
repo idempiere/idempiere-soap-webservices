@@ -14,7 +14,7 @@ This plugin exposes iDempiere's `CompositeService` and `ModelADService` SOAP end
 
 ## Repository Structure
 
-```
+```text
 idempiere-soap-webservices/
 ├── pom.xml                                    # Root aggregator (Tycho build)
 ├── org.idempiere.soap.parent/
@@ -56,8 +56,17 @@ during `validate`, plus the two repackaged CXF jars that Apache no longer publis
 from `https://docs.idempiere.org/binary.file/p2.repackaged`. Those jars are build output, they are
 not in git.
 
+Maven verifies the checksum of everything it fetches from Central. The two repackaged jars do not
+come from a Maven repository, so their SHA-256 is pinned in `cxf.repackaged.xmlbeans.sha256` and
+`cxf.repackaged.extproviders.sha256` and verified after the download - the build fails rather than
+package an artifact it cannot identify. The `12.0.1` in that URL is the release in which the
+repackaged set was last regenerated, not the iDempiere release consuming it; iDempiere core pins the
+same folder in `org.idempiere.p2.targetplatform/base.target`.
+
 When a jar version changes, edit the version properties in
-`org.idempiere.webservice.library/pom.xml` and regenerate the bundle manifest:
+`org.idempiere.webservice.library/pom.xml` - for `cxf.repackaged.version` also recompute the two
+pinned `sha256` values (`sha256sum org.idempiere.webservice.library/lib/*.jar` after a successful
+download) - and regenerate the bundle manifest:
 
 ```bash
 cd org.idempiere.webservice.library
@@ -71,7 +80,7 @@ have, which are the optional CXF and Spring integrations iDempiere never calls.
 
 By default the build assumes iDempiere core is cloned as a sibling folder:
 
-```
+```text
 parent-folder/
 ├── idempiere-master/   ← iDempiere core (must be built first: mvn clean verify)
 └── idempiere-soap-webservices/

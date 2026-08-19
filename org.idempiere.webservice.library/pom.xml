@@ -20,9 +20,17 @@
         <cxf.version>3.6.5</cxf.version>
         <spring.version>5.3.27</spring.version>
         <!-- Apache dropped the XmlBeans data binding and the XmlBeans JAX-RS providers after
-             CXF 3.1. iDempiere keeps them alive as repackaged bundles on its own p2 site. -->
+             CXF 3.1. iDempiere keeps them alive as repackaged bundles on its own p2 site.
+             The 12.0.1 in the URL is the release in which that repackaged set was last
+             regenerated, not the iDempiere release consuming it - core pins the same folder in
+             org.idempiere.p2.targetplatform/base.target. See org.idempiere.p2.repackaged/README.md.
+             These two jars are the only build inputs Maven does not checksum itself, so their
+             SHA-256 is pinned below and verified after download; bumping cxf.repackaged.version
+             means recomputing both. -->
         <cxf.repackaged.version>3.6.3</cxf.repackaged.version>
         <cxf.repackaged.url>https://docs.idempiere.org/binary.file/p2.repackaged/12.0.1/plugins</cxf.repackaged.url>
+        <cxf.repackaged.xmlbeans.sha256>4c8c7257518ade2e7cd5e44293bbc5dddfa880bc66f546535391d2bc21551888</cxf.repackaged.xmlbeans.sha256>
+        <cxf.repackaged.extproviders.sha256>c9c96ad18cd28e76c6d030f5724176a4f36c0f12f7b27c7e211820eea37957a9</cxf.repackaged.extproviders.sha256>
     </properties>
 
     <build>
@@ -186,10 +194,20 @@
                         <configuration>
                             <target>
                                 <mkdir dir="lib"/>
-                                <get dest="lib/cxf-rt-databinding-xmlbeans.jar" verbose="true" usetimestamp="true"
+                                <get dest="lib/cxf-rt-databinding-xmlbeans.jar" verbose="true" usetimestamp="true" maxtime="120"
                                      src="${cxf.repackaged.url}/org.apache.cxf.cxf-rt-databinding-xmlbeans_${cxf.repackaged.version}.jar"/>
-                                <get dest="lib/cxf-rt-rs-extension-providers.jar" verbose="true" usetimestamp="true"
+                                <checksum file="lib/cxf-rt-databinding-xmlbeans.jar" algorithm="SHA-256"
+                                          property="${cxf.repackaged.xmlbeans.sha256}" verifyproperty="xmlbeans.sha256.ok"/>
+                                <fail message="lib/cxf-rt-databinding-xmlbeans.jar does not match the pinned SHA-256 - refusing to package an unverified artifact">
+                                    <condition><not><istrue value="${xmlbeans.sha256.ok}"/></not></condition>
+                                </fail>
+                                <get dest="lib/cxf-rt-rs-extension-providers.jar" verbose="true" usetimestamp="true" maxtime="120"
                                      src="${cxf.repackaged.url}/org.apache.cxf.cxf-rt-rs-extension-providers_${cxf.repackaged.version}.jar"/>
+                                <checksum file="lib/cxf-rt-rs-extension-providers.jar" algorithm="SHA-256"
+                                          property="${cxf.repackaged.extproviders.sha256}" verifyproperty="extproviders.sha256.ok"/>
+                                <fail message="lib/cxf-rt-rs-extension-providers.jar does not match the pinned SHA-256 - refusing to package an unverified artifact">
+                                    <condition><not><istrue value="${extproviders.sha256.ok}"/></not></condition>
+                                </fail>
                             </target>
                         </configuration>
                     </execution>

@@ -28,7 +28,7 @@ It can only be uninstalled once every extension that depends on it has been unin
 
 Extensions consume it by requiring the bundle:
 
-```
+```text
 Require-Bundle: org.idempiere.webservice.library;bundle-version="14.0.0"
 ```
 
