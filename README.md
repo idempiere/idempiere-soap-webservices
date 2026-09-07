@@ -19,7 +19,7 @@ idempiere-soap-webservices/
 ├── pom.xml                                    # Root aggregator (Tycho build)
 ├── org.idempiere.soap.parent/
 │   └── pom.xml                                # Tycho config, iDempiere core P2 repository
-├── org.idempiere.webservice.library/          # Embedded Apache CXF + Spring runtime
+├── org.idempiere.webservice.library/          # Embedded Apache CXF runtime
 ├── org.idempiere.webservices.resources/       # CXF servlet config, XSD schemas, Spring context
 ├── org.idempiere.webservices/                 # Main SOAP bundle (Web-ContextPath: ADInterface)
 └── org.idempiere.webservice.client/           # Standalone Maven-to-P2 step, not part of the build
@@ -32,7 +32,7 @@ idempiere-soap-webservices/
 |---|---|
 | `org.idempiere.webservices` | Main OSGi web bundle. Hosts the SOAP endpoints, model classes (`MWebService`, `MWebServiceType`), and OSGi service registrations. Deployed at `/ADInterface`. |
 | `org.idempiere.webservices.resources` | Helper bundle. Provides the CXF servlet config (`cxf-servlet.xml`), Spring `ContextLoaderListener`, and XSD schemas consumed by CXF at runtime. |
-| `org.idempiere.webservice.library` | Library bundle. Embeds Apache CXF 3.6.5, Spring 5.3.27, Neethi, XmlSchema Core and WSDL4J through `Bundle-ClassPath` and re-exports them. iDempiere core stopped shipping these libraries in IDEMPIERE-6955, so they travel with the extension. Published as its own extension, declared as a dependency by this one. |
+| `org.idempiere.webservice.library` | Library bundle. Embeds Apache CXF 3.6.5, Neethi, XmlSchema Core and WSDL4J through `Bundle-ClassPath` and re-exports them. iDempiere core stopped shipping CXF in IDEMPIERE-6955, so it travels with the extension. Spring stays in core - the library imports it from the `wrapped.org.springframework.spring-*` bundles rather than embedding a second copy. Published as its own extension, declared as a dependency by this one. |
 | `org.idempiere.webservice.client` | **Not a Tycho module.** A standalone Maven build using the Reficio `p2-maven-plugin` to pull JAX-WS client JARs from Maven Central and wrap them as OSGi bundles. Kept for reference; the client feature stayed in iDempiere core. |
 
 ***
@@ -60,23 +60,45 @@ Maven verifies the checksum of everything it fetches from Central. The two repac
 come from a Maven repository, so their SHA-256 is pinned in `cxf.repackaged.xmlbeans.sha256` and
 `cxf.repackaged.extproviders.sha256` and verified after the download - the build fails rather than
 package an artifact it cannot identify. The `12.0.1` in that URL is the release in which the
-repackaged set was last regenerated, not the iDempiere release consuming it; iDempiere core pins the
-same folder in `org.idempiere.p2.targetplatform/base.target`.
+repackaged set was last regenerated, not the iDempiere release consuming it. iDempiere core used to
+pin the same folder in `org.idempiere.p2.targetplatform/base.target`; it stopped when CXF left core,
+so this build is now the only consumer of those two jars.
 
 When a jar version changes, edit the version properties in
 `org.idempiere.webservice.library/pom.xml` - for `cxf.repackaged.version` also recompute the two
 pinned `sha256` values (`sha256sum org.idempiere.webservice.library/lib/*.jar` after a successful
-download) - and regenerate the bundle manifest:
+download) - run `mvn validate` in that module to refresh `lib/`, and redo
+`org.idempiere.webservice.library/META-INF/MANIFEST.MF` by these rules:
 
-```bash
-cd org.idempiere.webservice.library
-mvn validate
-python3 tools/generate-manifest.py --print-dropped
-```
+* **`Bundle-ClassPath`** - `.` followed by every jar in `lib/`. The same list has to appear in
+  `build.properties` (`bin.includes`) and in `.classpath` as `kind="lib"` entries; all three plus the
+  contents of `lib/` must agree name for name.
+* **`Export-Package`** - every package that holds a `.class` in those jars, at the version of the
+  artifact it came from (CXF 3.6.5, the two repackaged CXF jars 3.6.3, neethi 3.2.0, xmlschema-core
+  2.3.1, wsdl4j 1.6.3); the highest version wins when a package appears in two jars. A package that an
+  embedded jar only *partially* vendors is not exported at all - exporting an incomplete copy of an
+  API hands a future consumer a bundle that resolves and then fails on a missing class.
+* **`Import-Package`** - every package the embedded classes reference that this bundle does not
+  export itself, that is not JDK owned (`java.`, `jdk.`, `sun.`, `org.w3c.`, `org.xml.sax.`) and that
+  an iDempiere core bundle does export. Packages core does not export are left out entirely: they are
+  optional CXF integrations iDempiere never calls. An entry is mandatory when one of the embedded OSGi
+  bundles declares it mandatory, and additionally for `javax.servlet`, `javax.servlet.http`,
+  `org.apache.commons.logging` and the `org.springframework.*` packages listed below; everything else
+  gets `;resolution:=optional`.
+* **Spring** - core owns it, this bundle must not embed or export it. CXF declares every
+  `org.springframework` import optional because CXF can run without Spring, but the iDempiere SOAP
+  stack cannot, so the packages CXF actually references are imported mandatorily at
+  `version="[5.3.27,6)"`: `aop`, `aop.framework`, `aop.support`, `beans`, `beans.factory`,
+  `beans.factory.config`, `beans.factory.support`, `beans.factory.wiring`, `beans.factory.xml`,
+  `context`, `context.annotation`, `context.event`, `context.support`, `core`, `core.io`,
+  `core.io.support`, `core.type`, `core.type.classreading`, `util`, `web.context`,
+  `web.context.support`. `org.springframework.web.servlet*` (spring-webmvc) and
+  `org.springframework.osgi.*` (Spring-DM) stay out - core has never shipped either.
+* Fold every header to 72 bytes, one entry per line.
 
-The generator exports every package of the embedded jars and imports every package they reference
-that iDempiere core actually exports; `--print-dropped` lists the referenced packages core does not
-have, which are the optional CXF and Spring integrations iDempiere never calls.
+Then prove it: `mvn clean verify` at the repository root, and install the rebuilt bundle in a running
+instance and read `diag org.idempiere.webservices`. Static resolution alone does not prove CXF can
+still find its bus extensions.
 
 By default the build assumes iDempiere core is cloned as a sibling folder:
 
@@ -104,7 +126,7 @@ mvn clean verify \
 
 ## Importing into Eclipse
 
-Build first: the 26 jars in `org.idempiere.webservice.library/lib/` are build output, so a fresh
+Build first: the 19 jars in `org.idempiere.webservice.library/lib/` are build output, so a fresh
 clone has an empty `lib/` and the classpath entries of that project point at missing files.
 
 ```bash

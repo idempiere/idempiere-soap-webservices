@@ -18,7 +18,6 @@
 
     <properties>
         <cxf.version>3.6.5</cxf.version>
-        <spring.version>5.3.27</spring.version>
         <!-- Apache dropped the XmlBeans data binding and the XmlBeans JAX-RS providers after
              CXF 3.1. iDempiere keeps them alive as repackaged bundles on its own p2 site.
              The 12.0.1 in the URL is the release in which that repackaged set was last
@@ -134,42 +133,6 @@
                                     <groupId>wsdl4j</groupId>
                                     <artifactId>wsdl4j</artifactId>
                                     <version>1.6.3</version>
-                                </artifactItem>
-                                <!-- Spring, required by the CXF bus configuration -->
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-aop</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-beans</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-context</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-context-support</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-core</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-expression</artifactId>
-                                    <version>${spring.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-web</artifactId>
-                                    <version>${spring.version}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>

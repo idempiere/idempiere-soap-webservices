@@ -100,7 +100,9 @@
                                     </requirement>
                                 </extraRequirements>
                                 <!-- org.idempiere.webservice.library imports a lot of optional
-                                     Spring and CXF integrations that iDempiere does not ship -->
+                                     CXF integrations that iDempiere does not ship. The Spring
+                                     packages CXF really needs are mandatory imports, so a broken
+                                     Spring wiring fails the build instead of the first request. -->
                                 <optionalDependencies>ignore</optionalDependencies>
                             </dependency-resolution>
                             <executionEnvironmentDefault>JavaSE-17</executionEnvironmentDefault>
