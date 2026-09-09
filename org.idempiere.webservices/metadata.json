@@ -26,5 +26,10 @@
       "symbolicName": "org.idempiere.webservices.resources"
     }
   ],
-  "dependencies": []
+  "dependencies": [
+    {
+      "id": "org.idempiere.webservice.library",
+      "version": "14.0.0"
+    }
+  ]
 }

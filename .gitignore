@@ -17,16 +17,18 @@ local/
 p2/
 
 # ── Eclipse workspace & IDE ──────────────────────────────────────────────────
+# .project, .classpath and .settings/ are tracked, like in iDempiere core, so the
+# plugins can be imported with "Existing Projects into Workspace". Only the per
+# developer compiler settings are ignored.
 .metadata/
 .recommenders/
 *.launch
 *.bak
 *.swp
 *.swo
-.settings/
+**/org.eclipse.jdt.core.prefs
+**/org.sonarlint.eclipse.core.prefs
 .loadpath
-.project
-.classpath
 *.iml
 *.iws
 *.ipr
@@ -39,3 +41,7 @@ org.idempiere.webservice.client/target/
 # ── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+
+# ── org.idempiere.webservice.library ─────────────────────────────────────────
+# The embedded jars are downloaded by the build, they are not sources
+org.idempiere.webservice.library/lib/*.jar
